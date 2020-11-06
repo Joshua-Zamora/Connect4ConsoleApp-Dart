@@ -1,8 +1,21 @@
 import 'dart:convert';
+import 'WebClient.dart';
 
 class ResponseParser {
 
-  Map<String, dynamic> parseInfo(var _info) {
-    return json.decode(_info.body);
+  Result<Info> parseInfo(var response) {
+    try {
+      var jsonContent = json.decode(response.body);
+      if(!jsonContent.isEmpty) {
+        int width = jsonContent['width'];
+        int height = jsonContent['height'];
+        List strategies = jsonContent['strategies'];
+        Info info = new Info(width, height, strategies);
+        return Result.value(info);
+      }
+    } on FormatException {
+    }
+    return Result.error('Information in wrong format.');
   }
+
 }

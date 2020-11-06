@@ -20,11 +20,18 @@ class WebClient {
     this._url = url;
   }
 
-  Future<Result<Map>> getInfo() async {
-    var response = await http.get(this._url + this.INFO);
-    var info = this._responseParser.parseInfo(response);
-    return Result.value(info);
+  Future<Result<Info>> getInfo() async {
+    var response = await http.get(_url + INFO);
+    if(response.statusCode == 200) {
+      var info = _responseParser.parseInfo(response);
+      if(info.isValue) {
+        return Result.value(info.value);
+      }
+      return Result.error(info.error);
+    }
+    return Result.error('Failed to connect with server.');
   }
+
 }
 
 class Result<T> {
@@ -42,4 +49,18 @@ class Result<T> {
   bool get isValue => value != null;
 
   bool get isError => error != null;
+}
+
+class Info {
+
+  int width;
+  int height;
+  List strategies;
+
+  Info(int width, int height, List strategies) {
+    this.width = width;
+    this.height = height;
+    this.strategies = strategies;
+  }
+
 }

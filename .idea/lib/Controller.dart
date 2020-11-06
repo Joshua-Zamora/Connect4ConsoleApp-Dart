@@ -1,19 +1,38 @@
 import 'WebClient.dart';
 import 'ConsoleUI.dart';
+import 'Model.dart';
 
 class Controller {
-  var _strategy, _info;
+
+  Board _board;
+  Player _player;
+  Player _opponent;
+
+  ConsoleUI _consoleUI;
+  WebClient _webClient;
+
+  Controller() {
+    this._player = new Player('O');
+    this._opponent = new Player('X');
+    this._consoleUI = new ConsoleUI();
+    this._webClient = new WebClient();
+  }
 
   void requestGame() async {
-    ConsoleUI consoleUI = new ConsoleUI();
-
-    WebClient webClient = new WebClient();
-
-    var url = consoleUI.promptServer(webClient.DEFAULT_URL);
-    consoleUI.showMessage('Obtaining server information .....');
-    webClient.setURL(url);
-    var result = await webClient.getInfo();
-    var strategies = result.value['strategies'];
-    var strategy = consoleUI.promptStrategy(strategies);
+    _consoleUI.showMessage('Welcome to Connect Four Game');
+    var url = _consoleUI.promptServer(_webClient.DEFAULT_URL);
+    _consoleUI.showMessage('Obtaining server information .....');
+    _webClient.setURL(url);
+    var result = await _webClient.getInfo();
+    if(result.isError) {
+      _consoleUI.showMessage(result.error);
+      return;
+    }
+    var strategies = result.value.strategies;
+    var width = result.value.width;
+    var height = result.value.height;
+    _board = new Board(width, height);
+    var strategy = _consoleUI.promptStrategy(strategies);
+    _consoleUI.showMessage('Creating a new game .....');
   }
 }
