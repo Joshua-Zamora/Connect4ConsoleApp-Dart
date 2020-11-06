@@ -2,16 +2,18 @@ import 'WebClient.dart';
 import 'ConsoleUI.dart';
 
 class Controller {
-  var _strategy, _url, _info;
+  var _strategy, _info;
 
   void requestGame() async {
     ConsoleUI consoleUI = new ConsoleUI();
-    this._url = consoleUI.promptServer();
 
-    WebClient webClient = new WebClient(this._url);
+    WebClient webClient = new WebClient();
 
-    this._info = await webClient.getInfo();
-
-    this._strategy = consoleUI.promptstrategy(this._info['strategies']);
+    var url = consoleUI.promptServer(webClient.DEFAULT_URL);
+    consoleUI.showMessage('Obtaining server information .....');
+    webClient.setURL(url);
+    var result = await webClient.getInfo();
+    var strategies = result.value['strategies'];
+    var strategy = consoleUI.promptStrategy(strategies);
   }
 }

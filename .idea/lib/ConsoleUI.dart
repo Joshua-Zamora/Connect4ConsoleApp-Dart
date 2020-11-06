@@ -2,38 +2,45 @@ import 'dart:io';
 
 class ConsoleUI {
 
-  promptServer() {
-    stdout.write('Enter the server URL [default: 0] ');
-
-    var url = stdin.readLineSync();
-    return url;
+  void showMessage(String message) {
+    print(message);
   }
 
-  promptstrategy(strategies) {
-    stdout.write('Select the server strategy: 1. ${strategies[0]} 2. ${strategies[1]} [default: 1] ');
-
-    var line = stdin.readLineSync();
-
-    try {
-      var selection = int.parse(line);
-
-      switch(selection) {
-        case 1:
-          stdout.write('Selected strategy: ' + strategies[0]);
-          return strategies[0];
-          break;
-        case 2:
-          stdout.write('Selected strategy: ' + strategies[1]);
-          return strategies[1];
-          break;
-        default:
-          stdout.write('Invalid selection: ${selection}');
-          break;
+  String promptServer(String defaultURL) {
+    while (true) {
+      stdout.write('Enter the server URL [default: $defaultURL] ');
+      var url = stdin.readLineSync();
+      if (url.isEmpty) {
+        return defaultURL;
       }
-    } on FormatException {
-      stdout.write('Format Error!');
+      else if (Uri
+          .parse(url)
+          .isAbsolute) {
+        return url;
+      }
+      showMessage('Invalid URL: $url');
     }
+  }
 
-    return strategies[0];
+  String promptStrategy(List strategies) {
+    while (true) {
+      stdout.write('Select the server strategy:');
+      for (var i = 0; i < strategies.length; i++) {
+        stdout.write(' ${i + 1}. ${strategies[i]}');
+      }
+      stdout.write(' [default: 1]');
+      var line = stdin.readLineSync();
+      try {
+        if (line.isEmpty) {
+          return strategies[0];
+        }
+        var selection = int.parse(line);
+        if (selection >= 1 && selection <= strategies.length) {
+          return strategies[selection - 1];
+        }
+      } on FormatException {
+      }
+      showMessage('Invalid selection: $line');
+    }
   }
 }

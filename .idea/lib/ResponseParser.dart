@@ -1,13 +1,8 @@
 import 'dart:convert';
 
 class ResponseParser {
-  var _info;
 
-  ResponseParser(info) {
-    this._info = info;
-  }
-
-  Map<String, dynamic> parseInfo() {
+  Map<String, dynamic> parseInfo(var _info) {
     return json.decode(_info.body);
   }
 }
