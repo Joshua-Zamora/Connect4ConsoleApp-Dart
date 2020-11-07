@@ -18,4 +18,21 @@ class ResponseParser {
     return Result.error('Information in wrong format.');
   }
 
+  Result<String> parseNew(var response) {
+    var jsonContent =json.decode(response.body);
+    if(!jsonContent.isEmpty) {
+      try {
+        response = jsonContent['response'];
+        if (response) {
+          var pid = jsonContent['pid'];
+          return Result.value(pid);
+        }
+        var reason = jsonContent['reason'];
+        return Result.error(reason);
+      } on Exception {
+      }
+    }
+    return Result.error('Information in wrong format.');
+  }
+
 }

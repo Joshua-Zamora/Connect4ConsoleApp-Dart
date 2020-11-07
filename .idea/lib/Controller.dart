@@ -23,7 +23,7 @@ class Controller {
     var url = _consoleUI.promptServer(_webClient.DEFAULT_URL);
     _consoleUI.showMessage('Obtaining server information .....');
     _webClient.setURL(url);
-    var result = await _webClient.getInfo();
+    dynamic result = await _webClient.getInfo();
     if(result.isError) {
       _consoleUI.showMessage(result.error);
       return;
@@ -32,7 +32,19 @@ class Controller {
     var width = result.value.width;
     var height = result.value.height;
     _board = new Board(width, height);
+    _consoleUI.setBoard(_board);
     var strategy = _consoleUI.promptStrategy(strategies);
     _consoleUI.showMessage('Creating a new game .....');
+    result = await _webClient.createGame(strategy);
+    if(result.isError) {
+      _consoleUI.showMessage(result.error);
+      return;
+    }
+    var pid = result.value;
+    playGame(pid);
+  }
+
+  void playGame(String pid) {
+
   }
 }

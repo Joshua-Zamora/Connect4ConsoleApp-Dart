@@ -1,6 +1,13 @@
 import 'dart:io';
+import 'Model.dart';
 
 class ConsoleUI {
+
+  Board _board;
+
+  void setBoard(Board board) {
+    this._board = board;
+  }
 
   void showMessage(String message) {
     print(message);

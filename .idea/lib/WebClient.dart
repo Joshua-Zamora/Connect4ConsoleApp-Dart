@@ -32,6 +32,17 @@ class WebClient {
     return Result.error('Failed to connect with server.');
   }
 
+  Future<Result<String>> createGame(String strategy) async {
+    var response = await http.get(_url + NEW + '?strategy=' + strategy);
+    if(response.statusCode == 200) {
+      var newgame = _responseParser.parseNew(response);
+      if(newgame.isValue) {
+        return Result.value(newgame.value);
+      }
+      return Result.error(newgame.error);
+    }
+    return Result.error('Failed to connect with server.');
+  }
 }
 
 class Result<T> {
