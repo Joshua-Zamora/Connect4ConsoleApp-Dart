@@ -45,6 +45,7 @@ class Controller {
   }
 
   void playGame(String pid) {
-
+    var lastMove = -1;
+    _consoleUI.showBoard(lastMove);
   }
 }

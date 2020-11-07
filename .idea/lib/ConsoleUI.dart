@@ -13,6 +13,24 @@ class ConsoleUI {
     print(message);
   }
 
+  void showBoard(int lastMove) {
+    for(int i = 0; i < _board.height; i++) {
+      for(int j = 0; j < _board.width; j++) {
+        stdout.write(_board.getBoardSlots()[i][j].getSymbol() + ' ');
+      }
+      print('');
+    }
+    for(int i = 1; i <= _board.width; i++) {
+      stdout.write(i.toString() + ' ');
+    }
+    print(' ');
+    if(lastMove >= 0) {
+      var marker = new List<String>.filled(_board.width, ' ', growable:false);
+      marker[lastMove] = '*';
+      print(marker.join(' '));
+    }
+  }
+
   String promptServer(String defaultURL) {
     while (true) {
       stdout.write('Enter the server URL [default: $defaultURL] ');
