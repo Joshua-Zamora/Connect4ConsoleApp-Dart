@@ -18,14 +18,23 @@ class ConsoleUI {
     }
   }
 
-  void printBoard() {
+  void printBoard(int lastMove) {
     for(int i = 0; i < 6; i++) {
       for(int j = 0; j < 7; j++) {
         if (_board[i][j] == 0) stdout.write('. ');
-        else if (_board[i][j] == 1) stdout.write('H ');
-        else stdout.write('C ');
+        else if (_board[i][j] == 1) stdout.write('O ');
+        else stdout.write('X ');
       }
         print('');
+    }
+    for(int i = 1; i <= 7; i++) {
+      stdout.write(i.toString() + ' ');
+    }
+    print('');
+    if(lastMove >= 0) {
+      var marker = new List<String>.filled(6, ' ', growable:false);
+      marker[lastMove] = '*';
+      print(marker.join(' '));
     }
   }
 
@@ -46,16 +55,18 @@ class ConsoleUI {
       stdout.write('Select the server strategy: 1. ' + strategies[0] + ' 2. ' + strategies[1] + ' [default: 1]: ');
 
       var line = stdin.readLineSync();
-
-      switch (int.parse(line)) {
-        case 1:
-          print("Selected strategy: " + strategies[0]);
-          return strategies[0];
-        case 2:
-          print("Selected strategy: " + strategies[1]);
-          return strategies[1];
-        default:
-          break;
+      try {
+        switch (int.parse(line)) {
+          case 1:
+            print("Selected strategy: " + strategies[0]);
+            return strategies[0];
+          case 2:
+            print("Selected strategy: " + strategies[1]);
+            return strategies[1];
+          default:
+            break;
+        }
+      } on Exception {
       }
       print('Invalid selection: ' + line);
     }
