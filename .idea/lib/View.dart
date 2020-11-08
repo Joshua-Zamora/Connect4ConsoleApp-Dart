@@ -18,7 +18,7 @@ class ConsoleUI {
     }
   }
 
-  void printBoard(int lastMove) {
+  void printBoard(int computerMove) {
     for(int i = 0; i < 6; i++) {
       for(int j = 0; j < 7; j++) {
         if (_board[i][j] == 0) stdout.write('. ');
@@ -27,20 +27,22 @@ class ConsoleUI {
       }
         print('');
     }
+
     for(int i = 1; i <= 7; i++) {
       stdout.write(i.toString() + ' ');
     }
     print('');
-    if(lastMove >= 0) {
-      var marker = new List<String>.filled(6, ' ', growable:false);
-      marker[lastMove] = '*';
+
+    if(computerMove >= 0) {
+      var marker = new List<String>.filled(7, ' ', growable:false);
+      marker[computerMove] = '*';
       print(marker.join(' '));
     }
   }
 
   String promptServer(String defaultURL) {
     while (true) {
-      stdout.write('Enter the server URL [default: $defaultURL] ');
+      stdout.write('Enter the server URL [default: $defaultURL]: ');
 
       var url = stdin.readLineSync();
 
@@ -55,19 +57,16 @@ class ConsoleUI {
       stdout.write('Select the server strategy: 1. ' + strategies[0] + ' 2. ' + strategies[1] + ' [default: 1]: ');
 
       var line = stdin.readLineSync();
-      try {
-        switch (int.parse(line)) {
-          case 1:
-            print("Selected strategy: " + strategies[0]);
-            return strategies[0];
-          case 2:
-            print("Selected strategy: " + strategies[1]);
-            return strategies[1];
-          default:
-            break;
-        }
-      } on Exception {
+
+      switch (int.tryParse(line)) {
+        case 1:
+          print("Selected strategy: " + strategies[0]);
+          return strategies[0];
+        case 2:
+          print("Selected strategy: " + strategies[1]);
+          return strategies[1];
       }
+
       print('Invalid selection: ' + line);
     }
   }
