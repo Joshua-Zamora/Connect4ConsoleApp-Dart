@@ -75,10 +75,7 @@ class ConsoleUI {
 
       var line = stdin.readLineSync();
 
-      if (line.isEmpty) {
-        print("No strategy requested ... => " + strategies[0] + " selected by default");
-        return strategies[0];
-      }
+      if (line.isEmpty) return strategies[0];
       switch (int.tryParse(line)) {
         case 1:
           print("Selected strategy: " + strategies[0]);
