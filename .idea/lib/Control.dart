@@ -22,7 +22,8 @@ class Controller {
   static int _computerMove = -1;
 
   void _playGame(var pid) async {
-      _console.printBoard(_computerMove);
+      _console.printBoard();
+      _console.printComputerMove(_computerMove);
 
       stdout.write("Enter a move (1-7): ");
 
@@ -51,23 +52,22 @@ class Controller {
 
   bool _endGame(var response) {
     if (response['ack_move']['isWin'] == true) {
-      _console.printBoard(-1);
+      _console.printWinnningRow(response['ack_move']['row']);
 
       print("You Won!");
-      print("Winning Row: " + response['ack_move']['row'].toString());
       return true;
     }
     else if (response['move']['isWin'] == true) {
-      _computerMove = response['move']['slot'];
       _console.insertDisc(int.parse(response['move']['slot'].toString()), 2);
-      _console.printBoard(_computerMove);
+      _console.printWinnningRow(response['move']['row']);
+      _console.printComputerMove(response['move']['slot']);
 
       print("You lost!");
-      print("Winning Row: " + response['move']['row'].toString());
       return true;
     }
     else if(response['move']['isDraw'] == true) {
-      _console.printBoard(_computerMove);
+      _console.printBoard();
+      _console.printComputerMove(response['move']['slot']);
 
       print("No more slots, You Drawn!");
       return true;

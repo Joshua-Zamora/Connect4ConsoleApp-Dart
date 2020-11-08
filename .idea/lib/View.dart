@@ -18,7 +18,7 @@ class ConsoleUI {
     }
   }
 
-  void printBoard(int computerMove) {
+  void printBoard() {
     for(int i = 0; i < 6; i++) {
       for(int j = 0; j < 7; j++) {
         if (_board[i][j] == 0) stdout.write('. ');
@@ -27,7 +27,9 @@ class ConsoleUI {
       }
         print('');
     }
+  }
 
+  void printComputerMove(int computerMove) {
     for(int i = 1; i <= 7; i++) {
       stdout.write(i.toString() + ' ');
     }
@@ -37,6 +39,21 @@ class ConsoleUI {
       var marker = new List<String>.filled(7, ' ', growable:false);
       marker[computerMove] = '*';
       print(marker.join(' '));
+    }
+  }
+
+  void printWinnningRow(List<dynamic> row) {
+    for(int i = 0; i < 6; i++) {
+      for(int j = 0; j < 7; j++) {
+        if (j == row[0] && i == row[1]) stdout.write('W ');
+        else if (j == row[2] && i == row[3]) stdout.write('W ');
+        else if (j == row[4] && i == row[5]) stdout.write('W ');
+        else if (j == row[6] && i == row[7]) stdout.write('W ');
+        else if (_board[i][j] == 0) stdout.write('. ');
+        else if (_board[i][j] == 1) stdout.write('O ');
+        else stdout.write('X ');
+      }
+      print('');
     }
   }
 
@@ -58,6 +75,10 @@ class ConsoleUI {
 
       var line = stdin.readLineSync();
 
+      if (line.isEmpty) {
+        print("No strategy requested ... => " + strategies[0] + " selected by default");
+        return strategies[0];
+      }
       switch (int.tryParse(line)) {
         case 1:
           print("Selected strategy: " + strategies[0]);
