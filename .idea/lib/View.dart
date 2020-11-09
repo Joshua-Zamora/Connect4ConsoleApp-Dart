@@ -43,7 +43,7 @@ class ConsoleUI {
 
     if(computerMove >= 0) {
       var marker = new List<String>.filled(7, ' ', growable:false);
-      marker[computerMove] = '*';
+      marker[computerMove] = '^';
       print(marker.join(' '));
     }
   }
