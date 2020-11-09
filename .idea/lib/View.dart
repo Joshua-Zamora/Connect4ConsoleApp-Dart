@@ -9,6 +9,9 @@ class ConsoleUI {
 
   }
 
+  // Insert the disc to the board.
+  // 1: represents the user move.
+  // 2: represents the computer move.
   void insertDisc(int move, int player) {
     for (int yCoordinate = 5; yCoordinate > -1; yCoordinate--) {
       if (_board[yCoordinate][move] == 0) {
@@ -18,17 +21,20 @@ class ConsoleUI {
     }
   }
 
+  // Prints the board and all discs in it.
   void printBoard() {
     for(int i = 0; i < 6; i++) {
       for(int j = 0; j < 7; j++) {
-        if (_board[i][j] == 0) stdout.write('. ');
-        else if (_board[i][j] == 1) stdout.write('O ');
-        else stdout.write('X ');
+        if (_board[i][j] == 0) stdout.write('. ');    // Empty slot.
+        else if (_board[i][j] == 1) stdout.write('O '); // User slot.
+        else stdout.write('X ');    // Computer slot.
       }
         print('');
     }
   }
 
+  // Prints '*' below the printed board on the column of the computers last move done.
+  // It also prints the number of columns in the board for the user to guide himself.
   void printComputerMove(int computerMove) {
     for(int i = 1; i <= 7; i++) {
       stdout.write(i.toString() + ' ');
@@ -42,6 +48,8 @@ class ConsoleUI {
     }
   }
 
+  // Once theres a winner of a game, this function highlights the winning row
+  // by changing the discs symbol to a 'W'.
   void printWinnningRow(List<dynamic> row) {
     for(int i = 0; i < 6; i++) {
       for(int j = 0; j < 7; j++) {
@@ -57,6 +65,7 @@ class ConsoleUI {
     }
   }
 
+  // Asks user for server otherwise use the default server.
   String promptServer(String defaultURL) {
     while (true) {
       stdout.write('Enter the server URL [default: $defaultURL]: ');
@@ -69,6 +78,7 @@ class ConsoleUI {
     }
   }
 
+  // Asks user for strategy provided by the server.
   String promptStrategy(var strategies) {
     while (true) {
       stdout.write('Select the server strategy: 1. ' + strategies[0] + ' 2. ' + strategies[1] + ' [default: 1]: ');
